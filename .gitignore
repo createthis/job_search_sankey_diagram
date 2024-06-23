@@ -1,0 +1,14 @@
+# vim
+*.swp
+**/*.swp
+
+# venv
+.venv
+**/.venv
+
+# python
+.mypy_cache
+**/.mypy_cache
+
+# output
+python/job_application_process_sankey_updated.html
