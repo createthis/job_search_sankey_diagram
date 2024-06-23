@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Process Sankey Diagram</title>
+    <script src="node_modules/d3/dist/d3.min.js"></script>
+    <script src="node_modules/d3-sankey/dist/d3-sankey.min.js"></script>
+    <style>
+        .node rect {
+            stroke: #000;
+            fill-opacity: .9;
+        }
+        .node text {
+            pointer-events: none;
+            text-shadow: 0 1px 0 #fff;
+            font: 10px sans-serif;
+        }
+        .link {
+            fill: none;
+            stroke: #000;
+            stroke-opacity: .2;
+        }
+        .link:hover {
+            stroke-opacity: .5;
+        }
+    </style>
+</head>
+<body>
+    <div id="sankey"></div>
+    <script>
+        // Set up the Sankey diagram properties
+        const margin = { top: 10, right: 10, bottom: 10, left: 10 },
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+        const svg = d3.select("#sankey")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        const sankey = d3.sankey()
+            .nodeWidth(15)
+            .nodePadding(10)
+            .extent([[1, 1], [width - 1, height - 6]]);
+
+        // Load the JSON data
+        d3.json("/sankey_data.json").then(data => {
+            const graph = sankey(data);
+
+            // Add the nodes
+            svg.append("g")
+                .selectAll("rect")
+                .data(graph.nodes)
+                .enter().append("rect")
+                .attr("x", d => d.x0)
+                .attr("y", d => d.y0)
+                .attr("height", d => d.y1 - d.y0)
+                .attr("width", sankey.nodeWidth())
+                .attr("fill", d => color(d.name.replace(/ .*/, "")))
+                .attr("stroke", "#000");
+
+            // Add the node labels
+            svg.append("g")
+                .selectAll("text")
+                .data(graph.nodes)
+                .enter().append("text")
+                .attr("x", d => d.x0 - 6)
+                .attr("y", d => (d.y1 + d.y0) / 2)
+                .attr("dy", "0.35em")
+                .attr("text-anchor", "end")
+                .text(d => d.name)
+                .filter(d => d.x0 < width / 2)
+                .attr("x", d => d.x1 + 6)
+                .attr("text-anchor", "start");
+
+            // Add the links
+            const link = svg.append("g")
+                .attr("fill", "none")
+                .attr("stroke", "#000")
+                .attr("stroke-opacity", 0.2)
+                .selectAll("path")
+                .data(graph.links)
+                .enter().append("path")
+                .attr("d", d3.sankeyLinkHorizontal())
+                .attr("stroke-width", d => Math.max(1, d.width));
+
+            link.append("title")
+                .text(d => `${d.source.name} → ${d.target.name}\n${d.value}`);
+
+            function color(name) {
+                const scale = d3.scaleOrdinal(d3.schemeCategory10);
+                return scale(name);
+            }
+        });
+    </script>
+</body>
+</html>

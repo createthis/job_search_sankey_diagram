@@ -32,3 +32,7 @@ To run the code, view the `README.md` in the `python` directory.
 ## Output
 
 ![job search sankey diagram](python/newplot.png "Job Search Sankey Diagram")
+
+## JS Version
+
+See `js/README.md` for js version using D3.
