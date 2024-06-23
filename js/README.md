@@ -10,15 +10,15 @@ I used `ChatGPT 4o` to generate this in the same conversation as I generated the
 
 ## Turn 1
 
-| Can you also do this in d3.js?
+> Can you also do this in d3.js?
 
 ## Turn 2
 
-| Use Node-xlsx to read the xlsx and output the necessary data to JSON. Then read the JSON from the d3 HTML page.
+> Use Node-xlsx to read the xlsx and output the necessary data to JSON. Then read the JSON from the d3 HTML page.
 
 ## Turn 3
 
-| My CORS policy is blocking me from reading sankey_data.json. Create a very basic express server to serve up sankey_data.json and index.html. Load d3 from node_modules. 
+> My CORS policy is blocking me from reading sankey_data.json. Create a very basic express server to serve up sankey_data.json and index.html. Load d3 from node_modules. 
 
 
 # Getting started
