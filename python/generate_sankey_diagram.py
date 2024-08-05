@@ -7,6 +7,18 @@ df = pd.read_excel(file_path, sheet_name='Sheet1')
 
 # Define the states with separated Rejected and Ghosted
 states = ["Applied", "Pre-screen", "1st Interview", "2nd Interview", "3rd Interview", "Rejected", "Ghosted"]
+# Define the states with additional code test nodes
+states = [
+    "Applied",
+    "Pre-screen",
+    "Pre-Interview Code Test",
+    "1st Interview",
+    "Post Interview Code Test",
+    "2nd Interview",
+    "3rd Interview",
+    "Rejected",
+    "Ghosted"
+]
 
 # Initialize a dictionary to store the transitions
 transitions = {state: {next_state: 0 for next_state in states} for state in states}
@@ -21,9 +33,17 @@ for i, row in df.iterrows():
         transitions[current_state]["Pre-screen"] += 1
         current_state = "Pre-screen"
         state_counts[current_state] += 1
+    if pd.notna(row['Pre-Interview Code Test']):
+        transitions[current_state]["Pre-Interview Code Test"] += 1
+        current_state = "Pre-Interview Code Test"
+        state_counts[current_state] += 1
     if pd.notna(row['1st Interview Date']):
         transitions[current_state]["1st Interview"] += 1
         current_state = "1st Interview"
+        state_counts[current_state] += 1
+    if pd.notna(row['Post Interview Code Test']):
+        transitions[current_state]["Post Interview Code Test"] += 1
+        current_state = "Post Interview Code Test"
         state_counts[current_state] += 1
     if pd.notna(row['2nd Interview']):
         transitions[current_state]["2nd Interview"] += 1
