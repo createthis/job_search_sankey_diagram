@@ -24,4 +24,7 @@ python3 -m pip install -r requirements.txt
 
 ```bash
 python3 generate_sankey_diagram.py
+
+# on a mac this opens the html in a browser
+open job_application_process_sankey_updated.html
 ```
